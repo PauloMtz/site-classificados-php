@@ -1,6 +1,6 @@
 <?php require 'temp/header.php'; ?>
 <div class="container">
-	<h2>Cadastre-se</h2>
+	<h2>Cadastre-se</h2><hr>
 	<?php
 	require 'classes/Usuario.class.php';
 

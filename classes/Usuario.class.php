@@ -27,5 +27,23 @@ class Usuario {
 		}
 
 	}
+
+	public function login($email, $senha) {
+
+		global $pdo;
+
+		$sql = $pdo->prepare("SELECT id_usuario FROM usuarios WHERE email = :email AND senha = :senha");
+		$sql->bindValue(":email", $email);
+		$sql->bindValue(":senha", md5($senha));
+		$sql->execute();
+
+		if ($sql->rowCount() > 0) {
+			$dados = $sql->fetch(); // aqui se usa fetch porque são dados de um usuário (uma linha)
+			$_SESSION['clogin'] = $dados['id_usuario']; // aqui, atribui-se o id do usuário à sessão
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
 ?>
