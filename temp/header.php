@@ -1,3 +1,6 @@
+<?php
+require 'config.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,11 +21,15 @@
 		</div>
 		<!-- cria os botões de navegação na barra de navegação -->
 		<ul class="nav navbar-nav navbar-right">
-			<li><a href="">Cadastre-se</a></li>
-			<li><a href="">Login</a></li>
-			<!-- Esses botões serão usados quando o usuário estiver logado -->
-			<!--<li><a href="">Meus Anúncios</a></li>
-			<li><a href="">Sair</a></li>-->
+			<!-- verifica se o usuário está logado (se tem uma sessão) -->
+			<?php if(isset($_SESSION['clogin']) && !empty($_SESSION['clogin'])) : ?>
+				<li><a href="meus-anuncios.php">Meus Anúncios</a></li>
+				<li><a href="sair.php">Sair</a></li>
+			<!-- se não tiver usuário logado, mostrar esses botões abaixo -->
+			<?php else : ?>
+				<li><a href="cadastro.php">Cadastre-se</a></li>
+				<li><a href="login.php">Login</a></li>
+			<?php endif; ?><!-- finaliza bloco if/else -->
 		</ul>
 	</div>
 </nav>
