@@ -1,11 +1,19 @@
-<?php require 'temp/header.php'; ?>
+<?php require 'temp/header.php';?>
 <div class="container">
 	<h2>Entre no sitema</h2><hr>
 	<?php
-	require 'classes/Usuario.class.php';
+
+	/*
+	* A inserção da classe Usuario e a instanciação do objeto
+	* tiveram que ser removidas nesse arquivo porque estavam
+	* dando conflito com a chamada no arquivo header, ou seja,
+	* estavam chamando a mesma classe duas vezes.
+	*/
+	
+	//require 'classes/Usuario.class.php';
 
 	// cria objeto
-	$u = new Usuario();
+	//$u = new Usuario();
 
 	// verifica dados enviados pelo formulário
 	if(isset($_POST['email']) && !empty($_POST['email'])) {

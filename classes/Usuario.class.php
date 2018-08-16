@@ -1,4 +1,5 @@
 <?php
+
 class Usuario {
 
 	public function cadastrar($nome, $email, $senha, $telefone) {
