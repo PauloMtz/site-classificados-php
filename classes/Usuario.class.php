@@ -45,5 +45,21 @@ class Usuario {
 			return false;
 		}
 	}
+
+	public function getUsuario() {
+
+		global $pdo;
+
+		$sql = $pdo->prepare("SELECT nome FROM usuarios WHERE id_usuario = :id");
+		$sql->bindValue(":id", $_SESSION['clogin']);
+		$sql->execute();
+
+		if ($sql->rowCount() > 0) {
+			$dados = $sql->fetch();
+			$_SESSION['clogin'] = $dados['nome'];
+		}
+
+		return $_SESSION['clogin'];
+	}
 }
 ?>

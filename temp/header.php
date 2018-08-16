@@ -1,5 +1,7 @@
 <?php
 require 'config.php';
+require 'classes/Usuario.class.php';
+$u = new Usuario();
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,6 +25,7 @@ require 'config.php';
 		<ul class="nav navbar-nav navbar-right">
 			<!-- verifica se o usuário está logado (se tem uma sessão) -->
 			<?php if(isset($_SESSION['clogin']) && !empty($_SESSION['clogin'])) : ?>
+				<li><a><?php echo "Olá, " . $u->getUsuario() . ". Seja bem-vindo(a)!" ?></a></li>
 				<li><a href="meus-anuncios.php">Meus Anúncios</a></li>
 				<li><a href="sair.php">Sair</a></li>
 			<!-- se não tiver usuário logado, mostrar esses botões abaixo -->
