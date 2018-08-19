@@ -2,7 +2,7 @@
 require 'temp/header.php';
 
 // verifica se existe sessão
-if (empty($_SESSION['clogin'])) {
+if (empty($_SESSION['clogin'])) {// PAREI EM 11:44 MIN
 	?>
 	<script type="text/javascript">window.location.href="login.php";</script>
 	<?php
@@ -47,8 +47,8 @@ if (empty($_SESSION['clogin'])) {
 			</td>
 			<td><?php echo $anuncio['titulo'] ?></td>
 			<td>R$ <?php echo number_format($anuncio['valor'], 2) ?></td>
-			<td><a href="editar-anuncio.php?id<?php echo $anuncio['id_anuncio'] ?>"><img src="assets/img/editar.png" height="23" data-toggle="tooltip" title="editar anúncio"></a></td>
-			<td><a href="editar-anuncio.php?id<?php echo $anuncio['id_anuncio'] ?>"><img src="assets/img/excluir.png" height="23" data-toggle="tooltip" title="excluir anúncio"></a></td>
+			<td><a href="editar-anuncio.php?id=<?php echo $anuncio['id_anuncio'] ?>"><img src="assets/img/editar.png" height="23" data-toggle="tooltip" title="editar anúncio"></a></td>
+			<td><a href="excluir-anuncio.php?id=<?php echo $anuncio['id_anuncio'] ?>"><img src="assets/img/excluir.png" height="23" data-toggle="tooltip" title="excluir anúncio"></a></td>
 		</tr>
 		<?php
 		} // finaliza foreach
