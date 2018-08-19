@@ -2,6 +2,7 @@
 <div class="container">
 	<h2>Cadastre-se</h2><hr>
 	<?php
+
 	require 'classes/Usuario.class.php';
 
 	// cria objeto
@@ -45,7 +46,7 @@
 	<form method="POST">
 		<div class="form-group">
 			<label for="nome">Nome:</label>
-			<input type="text" name="nome" id="nome" class="form-control" />
+			<input type="text" name="nome" id="nome" class="form-control" autofocus="true" />
 		</div>
 		<div class="form-group">
 			<label for="email">E-mail:</label>

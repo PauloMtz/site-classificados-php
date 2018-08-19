@@ -33,7 +33,7 @@ class Usuario {
 
 		global $pdo;
 
-		$sql = $pdo->prepare("SELECT id_usuario FROM usuarios WHERE email = :email AND senha = :senha");
+		$sql = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email AND senha = :senha");
 		$sql->bindValue(":email", $email);
 		$sql->bindValue(":senha", md5($senha));
 		$sql->execute();
@@ -41,26 +41,11 @@ class Usuario {
 		if ($sql->rowCount() > 0) {
 			$dados = $sql->fetch(); // aqui se usa fetch porque são dados de um usuário (uma linha)
 			$_SESSION['clogin'] = $dados['id_usuario']; // aqui, atribui-se o id do usuário à sessão
+			$_SESSION['usuario'] = $dados['nome']; // para pegar o nome do usuário na sessão 
 			return true;
 		} else {
 			return false;
 		}
-	}
-
-	public function getUsuario() {
-
-		global $pdo;
-
-		$sql = $pdo->prepare("SELECT nome FROM usuarios WHERE id_usuario = :id");
-		$sql->bindValue(":id", $_SESSION['clogin']);
-		$sql->execute();
-
-		if ($sql->rowCount() > 0) {
-			$dados = $sql->fetch();
-			$_SESSION['clogin'] = $dados['nome'];
-		}
-
-		return $_SESSION['clogin'];
 	}
 }
 ?>

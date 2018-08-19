@@ -2,18 +2,11 @@
 <div class="container">
 	<h2>Entre no sitema</h2><hr>
 	<?php
-
-	/*
-	* A inserção da classe Usuario e a instanciação do objeto
-	* tiveram que ser removidas nesse arquivo porque estavam
-	* dando conflito com a chamada no arquivo header, ou seja,
-	* estavam chamando a mesma classe duas vezes.
-	*/
 	
-	//require 'classes/Usuario.class.php';
+	require 'classes/Usuario.class.php';
 
 	// cria objeto
-	//$u = new Usuario();
+	$u = new Usuario();
 
 	// verifica dados enviados pelo formulário
 	if(isset($_POST['email']) && !empty($_POST['email'])) {
@@ -37,7 +30,7 @@
 		<div class="row">
 			<div class="form-group col-sm-5">
 				<label for="email">E-mail:</label>
-				<input type="email" name="email" id="email" class="form-control" />
+				<input type="email" name="email" id="email" class="form-control" autofocus="true" />
 			</div>
 		</div>
 		<div class="row">

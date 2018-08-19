@@ -9,8 +9,7 @@ class Anuncio {
 		$array = array();
 
 		$sql = $pdo->prepare("SELECT *,
-			/* seleciona uma imagem na tabela de imagens */
-			(SELECT url FROM anuncios_imagens WHERE anuncios_imagens.anuncio_id = anuncios.id_anuncio LIMIT 1) AS url 
+			(SELECT anuncios_imagens.url FROM anuncios_imagens WHERE anuncios_imagens.anuncio_id = anuncios.id_anuncio LIMIT 1) AS url 
 		FROM anuncios WHERE usuario_id = :usuario");
 		$sql->bindValue(":usuario", $_SESSION['clogin']);
 		$sql->execute();
@@ -23,6 +22,20 @@ class Anuncio {
 		}
 
 		return $array;
+	}
+
+	public function addAnuncio($categoria, $titulo, $descricao, $valor, $estado) {
+
+		global $pdo;
+
+		$sql = $pdo->prepare("INSERT INTO anuncios SET usuario_id = :usuario, categoria_id = :categoria, titulo = :titulo, descricao = :descricao, valor = :valor, estado = :estado");
+		$sql->bindValue(":usuario", $_SESSION['clogin']);
+		$sql->bindValue(":categoria", $categoria);
+		$sql->bindValue(":titulo", $titulo);
+		$sql->bindValue(":descricao", $descricao);
+		$sql->bindValue(":valor", $valor);
+		$sql->bindValue(":estado", $estado);
+		$sql->execute();
 	}
 }
 ?>

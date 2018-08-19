@@ -20,7 +20,7 @@ if (empty($_SESSION['clogin'])) {
 			<th>Foto</th>
 			<th>Título</th>
 			<th>Valor</th>
-			<th>Opções</th>
+			<th colspan="2">Opções</th>
 		</thead>
 		<?php
 		// instancia classe
@@ -36,10 +36,19 @@ if (empty($_SESSION['clogin'])) {
 		foreach ($anuncios as $anuncio) {
 		?>
 		<tr>
-			<td><img src="assets/img/img-anuncios/<?php echo $anuncio['url'] ?>" border="0"/></td>
+			<td>
+				<!-- se tiver uma imagem na url, mostra essa imagem -->
+				<?php if (!empty($anuncio['url'])): ?>
+				<img src="assets/img/img-anuncios/<?php echo $anuncio['url'] ?>" border="0" height="30" />
+				<!-- se não tiver, mostra uma imagem padrão (default.jpg) -->
+				<?php else: ?>
+				<img src="assets/img/default.png" height="35" />
+				<?php endif; ?>
+			</td>
 			<td><?php echo $anuncio['titulo'] ?></td>
 			<td>R$ <?php echo number_format($anuncio['valor'], 2) ?></td>
-			<td>Opções</td>
+			<td><a href="editar-anuncio.php?id<?php echo $anuncio['id_anuncio'] ?>"><img src="assets/img/editar.png" height="23" data-toggle="tooltip" title="editar anúncio"></a></td>
+			<td><a href="editar-anuncio.php?id<?php echo $anuncio['id_anuncio'] ?>"><img src="assets/img/excluir.png" height="23" data-toggle="tooltip" title="excluir anúncio"></a></td>
 		</tr>
 		<?php
 		} // finaliza foreach
