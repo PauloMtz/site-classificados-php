@@ -2,6 +2,18 @@
 
 class Usuario {
 
+	// método que pega o total de usuários no banco de dados
+	public function total_usuarios() {
+
+		 global $pdo;
+
+		 // conta os anúncios no banco
+		 $sql = $pdo->query("SELECT COUNT(*) AS u FROM usuarios");
+		 $row = $sql->fetch();
+
+		 return $row['u'];
+	}
+
 	public function cadastrar($nome, $email, $senha, $telefone) {
 
 		global $pdo;

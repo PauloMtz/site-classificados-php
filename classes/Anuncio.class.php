@@ -1,6 +1,42 @@
 <?php
 class Anuncio {
 
+	// método que pega o total de anúncios no banco de dados
+	public function total_anuncios() {
+
+		 global $pdo;
+
+		 // conta os anúncios no banco
+		 $sql = $pdo->query("SELECT COUNT(*) AS c FROM anuncios");
+		 $row = $sql->fetch();
+
+		 return $row['c'];
+	}
+
+	// método que exibe os anúncios na página inicial
+	public function ultimos_anuncios() {
+
+		global $pdo;
+
+		// criar um array vazio, porque se não entrar no if, o array continua vazio
+		$array = array();
+
+		$sql = $pdo->prepare("SELECT *,
+			(SELECT anuncios_imagens.url FROM anuncios_imagens WHERE anuncios_imagens.anuncio_id = anuncios.id_anuncio LIMIT 1) AS url,
+			(SELECT categorias.nome FROM categorias WHERE categorias.id_categorias = anuncios.categoria_id) AS categoria
+		FROM anuncios ORDER BY id_anuncio DESC LIMIT 3");
+		$sql->execute();
+
+		// se $sql retornar alguma coisa
+		if ($sql->rowCount() > 0) {
+
+			// joga tudo o que encontrar dentro do array
+			$array = $sql->fetchAll();
+		}
+
+		return $array;
+	}
+
 	// esse método é utilizado na página para exibir os anúncios do usuário (meus-anuncios.php)
 	public function getMeusAnuncios() {
 
