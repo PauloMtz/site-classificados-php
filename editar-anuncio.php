@@ -39,8 +39,15 @@ if(isset($_POST['titulo']) && !empty($_POST['titulo'])) {
 	$descricao = addslashes($_POST['descricao']);
 	$estado = addslashes($_POST['estado']);
 
+	// receber as fotos (se houver)
+	if (isset($_FILES['fotos'])) {
+		$fotos = $_FILES['fotos'];
+	} else {
+		$fotos = array();
+	}
+
 	// pega as variáveis e joga no método editAnuncio, que fica na classe Anuncio
-	$a->editAnuncio($categoria, $titulo, $descricao, $valor, $estado, $id);
+	$a->editAnuncio($categoria, $titulo, $descricao, $valor, $estado, $fotos, $id);
 	
 	?>
 	<div class="alert alert-success">
@@ -89,6 +96,23 @@ if(isset($_POST['titulo']) && !empty($_POST['titulo'])) {
 				</select>
 			</div>
 		</div>
+		<!-- Painel do formulário para adicionar fotos do anúncio -->
+		<div class="form-group">
+			<label for="add_foto">Adicionar Foto(s) para o anúncio</label>
+			<input type="file" name="fotos[]" multiple="true"/><br>
+
+			<div class="panel panel-default">
+				<div class="panel-heading"><b>Fotos do Anúncio</b></div>
+				<div class="panel-body">
+					<?php foreach($dados['fotos'] as $foto): ?>
+					<div class="foto_item">
+						<img src="assets/img/img-anuncios/<?php echo $foto['url']; ?>" class="img-thumbnail" border="0" /><br/>
+						<a href="excluir-foto.php?id=<?php echo $foto['id_anuncio_img']; ?>" class="btn btn-default">Excluir Imagem</a>
+					</div>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</div>	
 		<input type="submit" value="Atualizar">
 	</form>
 </div>
