@@ -2,7 +2,7 @@
 require 'temp/header.php';
 
 // verifica se existe sessão
-if (empty($_SESSION['clogin'])) {// PAREI EM 11:44 MIN
+if (empty($_SESSION['clogin'])) {
 	?>
 	<script type="text/javascript">window.location.href="login.php";</script>
 	<?php

@@ -10,8 +10,24 @@ $u = new Usuario();
 // inicia variáveis que serão usadas abaixo
 $total_anuncios = $a->total_anuncios();
 $total_usuarios = $u->total_usuarios();
-$anuncios = $a->ultimos_anuncios();
+// $anuncios = $a->ultimos_anuncios(); /* foi lá para baixo, por causa da paginação*/
 
+/* ------------- PAGINAÇÃO ------------------- */
+$p = 1; // se estiver na página 1 --> ok
+$porPagina = 2; // inicia quantidade de itens por página
+
+// se não estiver na p. 1 --> vai para a página que o usuário clicar
+if (isset($_GET['p'])) {
+	$p = addslashes($_GET['p']);
+}
+
+// pega a quantidade de páginas na paginação
+$total_paginas = ceil($total_anuncios / $porPagina); // ceil arredonda para cima
+
+// agora, $p é passado como parâmetro
+$anuncios = $a->ultimos_anuncios($p, $porPagina);
+
+/* a exibição da paginação é feita abaixo da tabela que mostra os itens */
 ?>
 <!-- cria o container jumbotron -->
 <div class="container-fluid">
@@ -41,7 +57,8 @@ $anuncios = $a->ultimos_anuncios();
 								<?php endif; ?>
 							</td>
 							<td><!-- na segunda, exibe o nome conforme titulo e a categoria -->
-								<a href="produto.php?id=<?php echo $anuncio['id_anuncio'] ?>"><?php echo $anuncio['titulo'] ?></a><br><!-- essa categoria na linha abaixo é a da consulta, no método ultimos_anuncios() -->
+								<a href="produto.php?id=<?php echo $anuncio['id_anuncio'] ?>"><?php echo $anuncio['titulo'] ?></a><br>
+								<!-- essa categoria na linha abaixo é a da consulta, no método ultimos_anuncios() -->
 								<?php echo utf8_encode($anuncio['categoria']) ?>
 							</td>
 							<td>R$ <?php echo number_format($anuncio['valor'], 2) ?></td>
@@ -49,6 +66,12 @@ $anuncios = $a->ultimos_anuncios();
 					<?php endforeach; ?>
 				</tbody>
 			</table>
+			<!-- exibição da paginação (com Bootstrap) -->
+			<ul class="pagination">
+				<?php for ($i=1; $i <= $total_paginas; $i++) : ?>
+					<li class="<?php echo ($p == $i) ? 'active' : '' ?>"><a href="index.php?p=<?php echo $i; ?>"><?php echo $i ?></a></li>
+				<?php endfor; ?>
+			</ul>
 		</div>
 	</div>
 </div>

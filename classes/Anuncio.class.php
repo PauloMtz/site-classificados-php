@@ -14,17 +14,21 @@ class Anuncio {
 	}
 
 	// método que exibe os anúncios na página inicial
-	public function ultimos_anuncios() {
+	// o parâmetro $p foi adicionado para ser utilizado na paginação
+	public function ultimos_anuncios($p, $porPagina) {
 
 		global $pdo;
 
-		// criar um array vazio, porque se não entrar no if, o array continua vazio
+		$offset = ($p - 1) * $porPagina; // porque array começa com zero, e não existe página zero
+										 // depois, multiplica pela quantidade de itens por página
+
+		// cria um array vazio, porque se não entrar no if, o array continua vazio
 		$array = array();
 
 		$sql = $pdo->prepare("SELECT *,
 			(SELECT anuncios_imagens.url FROM anuncios_imagens WHERE anuncios_imagens.anuncio_id = anuncios.id_anuncio LIMIT 1) AS url,
 			(SELECT categorias.nome FROM categorias WHERE categorias.id_categorias = anuncios.categoria_id) AS categoria
-		FROM anuncios ORDER BY id_anuncio DESC LIMIT 3");
+		FROM anuncios ORDER BY id_anuncio DESC LIMIT $offset, $porPagina");
 		$sql->execute();
 
 		// se $sql retornar alguma coisa
