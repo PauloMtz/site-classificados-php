@@ -72,7 +72,10 @@ class Anuncio {
 
 		global $pdo;
 
-		$sql = $pdo->prepare("SELECT * FROM anuncios WHERE id_anuncio = :id");
+		$sql = $pdo->prepare("SELECT *,
+			(SELECT categorias.nome FROM categorias WHERE categorias.id_categorias = anuncios.categoria_id) AS categoria,
+			(SELECT usuarios.telefone FROM usuarios WHERE usuarios.id_usuario = anuncios.usuario_id) AS telefone
+			FROM anuncios WHERE id_anuncio = :id");
 		$sql->bindValue(":id", $id);
 		$sql->execute();
 
