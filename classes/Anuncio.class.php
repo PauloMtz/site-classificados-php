@@ -2,12 +2,45 @@
 class Anuncio {
 
 	// método que pega o total de anúncios no banco de dados
-	public function total_anuncios() {
+	public function total_anuncios($filtros) {
 
 		 global $pdo;
 
+		 // filtros utilizados na pesquisa avançada
+		// esse '1=1' é para prevenir erros no WHERE na consulta $sql abaixo
+		$filtrostring = array('1=1');
+
+		if(!empty($filtros['categoria'])) {
+			$filtrostring[] = 'anuncios.categoria_id = :id_categoria';
+		}
+
+		if(!empty($filtros['preco'])) {
+			$filtrostring[] = 'anuncios.valor BETWEEN :preco1 AND :preco2';
+		}
+
+		if(!empty($filtros['estado'])) {
+			$filtrostring[] = 'anuncios.estado = :estado';
+		}
+
 		 // conta os anúncios no banco
-		 $sql = $pdo->query("SELECT COUNT(*) AS c FROM anuncios");
+		 $sql = $pdo->prepare("SELECT COUNT(*) AS c FROM anuncios WHERE ".implode(' AND ', $filtrostring));
+
+		 // verificação dos itens da pesquisa avançada
+		if(!empty($filtros['categoria'])) {
+			$sql->bindValue(':id_categoria', $filtros['categoria']);
+		}
+
+		if(!empty($filtros['preco'])) {
+			$preco = explode('-', $filtros['preco']);
+			$sql->bindValue(':preco1', $preco[0]);
+			$sql->bindValue(':preco2', $preco[1]);
+		}
+
+		if(!empty($filtros['estado'])) {
+			$sql->bindValue(':estado', $filtros['estado']);
+		}
+		
+		 $sql->execute();
 		 $row = $sql->fetch();
 
 		 return $row['c'];
@@ -15,7 +48,7 @@ class Anuncio {
 
 	// método que exibe os anúncios na página inicial
 	// o parâmetro $p foi adicionado para ser utilizado na paginação
-	public function ultimos_anuncios($p, $porPagina) {
+	public function ultimos_anuncios($p, $porPagina, $filtros) {
 
 		global $pdo;
 
@@ -25,10 +58,42 @@ class Anuncio {
 		// cria um array vazio, porque se não entrar no if, o array continua vazio
 		$array = array();
 
+		// filtros utilizados na pesquisa avançada
+		// esse '1=1' é para prevenir erros no WHERE na consulta $sql abaixo
+		$filtrostring = array('1=1');
+
+		if(!empty($filtros['categoria'])) {
+			$filtrostring[] = 'anuncios.categoria_id = :id_categoria';
+		}
+
+		if(!empty($filtros['preco'])) {
+			$filtrostring[] = 'anuncios.valor BETWEEN :preco1 AND :preco2';
+		}
+
+		if(!empty($filtros['estado'])) {
+			$filtrostring[] = 'anuncios.estado = :estado';
+		}
+
 		$sql = $pdo->prepare("SELECT *,
 			(SELECT anuncios_imagens.url FROM anuncios_imagens WHERE anuncios_imagens.anuncio_id = anuncios.id_anuncio LIMIT 1) AS url,
 			(SELECT categorias.nome FROM categorias WHERE categorias.id_categorias = anuncios.categoria_id) AS categoria
-		FROM anuncios ORDER BY id_anuncio DESC LIMIT $offset, $porPagina");
+		FROM anuncios WHERE ".implode(' AND ', $filtrostring)." ORDER BY id_anuncio DESC LIMIT $offset, $porPagina");
+
+		// verificação dos itens da pesquisa avançada
+		if(!empty($filtros['categoria'])) {
+			$sql->bindValue(':id_categoria', $filtros['categoria']);
+		}
+
+		if(!empty($filtros['preco'])) {
+			$preco = explode('-', $filtros['preco']);
+			$sql->bindValue(':preco1', $preco[0]);
+			$sql->bindValue(':preco2', $preco[1]);
+		}
+
+		if(!empty($filtros['estado'])) {
+			$sql->bindValue(':estado', $filtros['estado']);
+		}
+
 		$sql->execute();
 
 		// se $sql retornar alguma coisa
