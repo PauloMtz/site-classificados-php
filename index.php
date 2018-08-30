@@ -121,7 +121,7 @@ $categorias = $c->getList();
 			<!-- exibição da paginação (com Bootstrap) -->
 			<ul class="pagination">
 				<?php for ($i=1; $i <= $total_paginas; $i++) : ?>
-					<li class="<?php echo ($p == $i) ? 'active' : '' ?>"><a href="index.php?p=<?php echo $i; ?>"><?php echo $i ?></a></li>
+					<li class="<?php echo ($p == $i) ? 'active' : '' ?>"><a href="index.php?<?php $w = $_GET; $w['p']=$i;echo http_build_query($w); ?>"><?php echo $i ?></a></li>
 				<?php endfor; ?>
 			</ul>
 		</div>
